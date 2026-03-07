@@ -1,0 +1,21 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic-settings
+sqlalchemy
+psycopg2-binary  # ou asyncpg se quiser assíncrono (recomendo asyncpg + databases)
+databases[sqlite,postgresql]  # se for usar SQL assíncrono
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+beanie  # ODM MongoDB assíncrono
+motor  # driver assíncrono MongoDB (necessário para beanie)
+email-validator  # opcional
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+python-dotenv
+psycopg2-binary
+bcrypt
+python-jose[cryptography]

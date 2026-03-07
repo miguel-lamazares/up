@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dexwarehouse - dashboard</title>
+
+    <link rel="stylesheet" href="../static/css/dashboard.css">
+    <link rel="icon" href="../static/img/icon.png">
+    <!--google icons-->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img src="../static/img/exeperimental.png">
+                </div>
+
+                <div class="close" id="close-btn">
+                    <span>
+                        <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/delete-sign.png"
+                            alt="delete-sign" />
+                    </span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a href="" class="active">
+                    <span>
+                        <img width="32" height="32"
+                            src="https://img.icons8.com/liquid-glass-color/32/dashboard-layout.png">
+                    </span>
+                    <h3>Dashboard</h3>
+                </a>
+
+                <a href="">
+                    <span>
+                        <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/group.png">
+                    </span>
+                    <h3>Clientes</h3>
+                </a>
+
+                <a href="">
+                    <span>
+                        <img width="32" height="32"
+                            src="https://img.icons8.com/liquid-glass-color/32/signing-a-document.png">
+                    </span>
+                    <h3>Pedidos</h3>
+                </a>
+
+                <a href="">
+                    <span>
+                        <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/product.png">
+                    </span>
+                    <h3>Produtos</h3>
+                </a>
+
+                <a href="">
+                    <span>
+                        <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/warehouse-1.png">
+                    </span>
+                    <h3>Estoque</h3>
+                </a>
+
+                <a href="">
+                    <span>
+                        <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/combo-chart.png">
+                    </span>
+                    <h3>Analytics</h3>
+                </a>
+
+                <a href="logout" id="logout">
+                    <span>
+                        <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/exit.png">
+                    </span>
+                    <h3 >Logout</h3>
+                </a>
+            </div>
+        </aside>
+
+        <main>
+            <h1>Dashboard</h1>
+
+            <div class="insights">
+                <div class="sales">
+                    <span class="material-symbols-outlined">
+                        money_bag
+                    </span>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Total em vendas</h3>
+                            <h1>25,000</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="number">
+                                <p>81%</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <small class="text-muted">Total de vendas mes passados: 205.500</small>
+                </div>
+                <div class="products">
+                    <span class="material-symbols-outlined">
+                        forklift
+                    </span>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Produtos em estoque</h3>
+                            <h1>600</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="number">
+                                <p>81%</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <small class="text-muted">Producao total do mes passado: 2000</small>
+                </div>
+                <div class="orders">
+                    <span class="material-symbols-outlined">
+                        package_2
+                    </span>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>pedidos em andamento</h3>
+                            <h1>8</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            <div class="number">
+                                <p>81%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <small class="text-muted">Total de pedidos mes passado: 70</small>
+                </div>
+
+            </div>
+
+            <div class="recent-order">
+                <h2>Ultimos pedidos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                Cliente
+                            </th>
+                            <th>
+                                Produto
+                            </th>
+                            <th>
+                                Quantidade
+                            </th>
+                            <th>
+                                Pagamento
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                        <tr>
+                            <td>Bramil</td>
+                            <td>Natural</td>
+                            <td>600</td>
+                            <td>Boleto</td>
+                            <td class="warning">Pendente</td>
+                            <td class="primary">Details</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#">Mostrar tudo</a>
+            </div>
+        </main>
+        <div class="right">
+    </div>
+    </div>
+</body>
+<script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+
+</html>
