@@ -19,3 +19,11 @@ python-dotenv
 psycopg2-binary
 bcrypt
 python-jose[cryptography]
+fastapi
+uvicorn
+python-dotenv
+psycopg2-binary
+python-jose
+passlib[bcrypt]
+jinja2
+python-multipart
