@@ -1,7 +1,7 @@
 from fastapi import Request, status
 from fastapi.responses import RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
-from auth import decode_jwt_token
+from app.auth import decode_jwt_token
 
 PUBLIC_PATHS = ["/login", "/", "/logout"]
 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from middleware import AuthMiddleware
-import routes
+from app.middleware import AuthMiddleware
+from app import routes
 
 app = FastAPI()
 

@@ -3,8 +3,8 @@ from fastapi import Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from passlib.context import CryptContext
 from fastapi.templating import Jinja2Templates
-from database import buscar_usuario_por_username
-from auth import create_jwt_token
+from app.database import buscar_usuario_por_username
+from app.auth import create_jwt_token
 
 templates = Jinja2Templates(directory="app/templates")
 
