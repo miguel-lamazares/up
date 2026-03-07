@@ -54,12 +54,12 @@ async def login(request: Request, username: str = Form(...), password: str = For
 
 
 async def dashboard(request: Request):
-
+    username = getattr(request.state, "user", None)
     return templates.TemplateResponse(
         "dashboard.html",
         {
             "request": request,
-            "username": request.state.user
+            "username": username
         }
     )
 
