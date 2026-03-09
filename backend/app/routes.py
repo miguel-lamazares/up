@@ -29,7 +29,7 @@ async def login(request: Request, username: str = Form(...), password: str = For
 
     user = buscar_usuario_por_username(username)
 
-    if not user or not pwd_context.verify(password, user["password"]):
+    if not user or not pwd_context.verify(password[:72], user["password"]):
 
         return templates.TemplateResponse(
             "login.html",
