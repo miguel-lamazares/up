@@ -27,17 +27,17 @@ async def login_page(request: Request, erro: str = None):
 
 async def login(request: Request, username: str = Form(...), password: str = Form(...)):
 
-    user = buscar_usuario_por_username(username)
+    ADMIN_USER = "admin"
+    ADMIN_PASS = "Admin@123"
 
-    if not user or not pwd_context.verify(password[:72], user["password"]):
-
+    if username != ADMIN_USER or password != ADMIN_PASS:
         return templates.TemplateResponse(
             "login.html",
             {"request": request, "erro": "Usuário ou senha inválidos"},
             status_code=401
         )
 
-    token = create_jwt_token(user["username"])
+    token = create_jwt_token(username)
 
     response = RedirectResponse("/dashboard", status_code=303)
 
@@ -45,7 +45,7 @@ async def login(request: Request, username: str = Form(...), password: str = For
         key="token",
         value=token,
         httponly=True,
-        secure=False if ENV == "dev" else True,
+        secure=False,
         samesite="lax",
         max_age=3600
     )
