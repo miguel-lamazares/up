@@ -3,7 +3,8 @@ from fastapi.responses import RedirectResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.auth import decode_jwt_token
 
-PUBLIC_PATHS = ["/login", "/", "/logout"]
+PUBLIC_PATHS = ["/login", "/"]
+
 
 class AuthMiddleware(BaseHTTPMiddleware):
 
@@ -25,8 +26,10 @@ class AuthMiddleware(BaseHTTPMiddleware):
         payload = decode_jwt_token(token)
 
         if not payload:
+
             response = RedirectResponse("/login", status_code=status.HTTP_303_SEE_OTHER)
             response.delete_cookie("token")
+
             return response
 
         request.state.user = payload["sub"]

@@ -19,14 +19,41 @@ def get_db_connection():
         cursor_factory=RealDictCursor
     )
 
+
 def buscar_usuario_por_username(username: str):
+
     conn = get_db_connection()
+
     try:
         with conn.cursor() as cur:
+
             cur.execute(
                 "SELECT id, username, password FROM usuarios WHERE username=%s",
                 (username,)
             )
+
             return cur.fetchone()
+
+    finally:
+        conn.close()
+
+
+def registrar_login(username, ip, success):
+
+    conn = get_db_connection()
+
+    try:
+        with conn.cursor() as cur:
+
+            cur.execute(
+                """
+                INSERT INTO login_logs (username, ip, success)
+                VALUES (%s,%s,%s)
+                """,
+                (username, ip, success)
+            )
+
+            conn.commit()
+
     finally:
         conn.close()
