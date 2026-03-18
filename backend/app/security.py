@@ -1,6 +1,6 @@
 import time
 from collections import defaultdict
-
+from app.config import JWT_SECRET_KEY, JWT_ALGORITHM, JWT_EXPIRATION_MINUTES
 login_attempts = defaultdict(list)
 
 MAX_ATTEMPTS = 5

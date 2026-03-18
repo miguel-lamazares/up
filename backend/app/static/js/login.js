@@ -52,5 +52,20 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    console.log("Login script carregado.");
+    document.addEventListener("DOMContentLoaded", () => {
+    const passwordInput = document.getElementById("password");
+    const usernameInput = document.getElementById("username");
+    const errorMessage = document.querySelector(".error-message");
+
+    if (errorMessage) {
+        if (passwordInput) passwordInput.value = "";
+
+        // foca no campo correto
+        if (usernameInput && usernameInput.value === "") {
+            usernameInput.focus();
+        } else {
+            passwordInput.focus();
+        }
+    }
+});
 });

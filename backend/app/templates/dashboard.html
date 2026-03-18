@@ -10,7 +10,6 @@
     <link rel="icon" href="../static/img/icon.png">
     <!--google icons-->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
 </head>
 
 <body>
@@ -20,7 +19,6 @@
                 <div class="logo">
                     <img src="../static/img/exeperimental.png">
                 </div>
-
                 <div class="close" id="close-btn">
                     <span>
                         <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/delete-sign.png"
@@ -30,7 +28,7 @@
             </div>
 
             <div class="sidebar">
-                <a href="" class="active">
+                <a href="#" class="active" data-section="dashboard">
                     <span>
                         <img width="32" height="32"
                             src="https://img.icons8.com/liquid-glass-color/32/dashboard-layout.png">
@@ -38,14 +36,14 @@
                     <h3>Dashboard</h3>
                 </a>
 
-                <a href="">
+                <a href="#" data-section="clientes">
                     <span>
                         <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/group.png">
                     </span>
                     <h3>Clientes</h3>
                 </a>
 
-                <a href="">
+                <a href="#" data-section="pedidos">
                     <span>
                         <img width="32" height="32"
                             src="https://img.icons8.com/liquid-glass-color/32/signing-a-document.png">
@@ -53,21 +51,21 @@
                     <h3>Pedidos</h3>
                 </a>
 
-                <a href="">
+                <a href="#" data-section="produtos">
                     <span>
                         <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/product.png">
                     </span>
                     <h3>Produtos</h3>
                 </a>
 
-                <a href="">
+                <a href="#" data-section="estoque" id="estoque-link">
                     <span>
                         <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/warehouse-1.png">
                     </span>
                     <h3>Estoque</h3>
                 </a>
 
-                <a href="">
+                <a href="#" data-section="analytics">
                     <span>
                         <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/combo-chart.png">
                     </span>
@@ -84,158 +82,117 @@
         </aside>
 
         <main>
-            <h1>Dashboard</h1>
+            <!-- Seção Dashboard -->
+            <div id="dashboard-section">
+                <h1>Dashboard</h1>
 
-            <div class="insights">
-                <div class="sales">
-                    <span class="material-symbols-outlined">
-                        money_bag
-                    </span>
-                    <div class="middle">
-                        <div class="left">
-                            <h3>Total em vendas</h3>
-                            <h1>25,000</h1>
-                        </div>
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="number">
-                                <p>81%</p>
+                <div class="insights">
+                    <div class="sales">
+                        <span class="material-symbols-outlined">money_bag</span>
+                        <div class="middle">
+                            <div class="left">
+                                <h3>Total em vendas</h3>
+                                <h1>25,000</h1>
                             </div>
-
-                        </div>
-                    </div>
-                    <small class="text-muted">Total de vendas mes passados: 205.500</small>
-                </div>
-                <div class="products">
-                    <span class="material-symbols-outlined">
-                        forklift
-                    </span>
-                    <div class="middle">
-                        <div class="left">
-                            <h3>Produtos em estoque</h3>
-                            <h1>600</h1>
-                        </div>
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="number">
-                                <p>81%</p>
-                            </div>
-
-                        </div>
-                    </div>
-                    <small class="text-muted">Producao total do mes passado: 2000</small>
-                </div>
-                <div class="orders">
-                    <span class="material-symbols-outlined">
-                        package_2
-                    </span>
-                    <div class="middle">
-                        <div class="left">
-                            <h3>pedidos em andamento</h3>
-                            <h1>8</h1>
-                        </div>
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            <div class="number">
-                                <p>81%</p>
+                            <div class="progress">
+                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
+                                <div class="number"><p>81%</p></div>
                             </div>
                         </div>
+                        <small class="text-muted">Total de vendas mes passados: 205.500</small>
                     </div>
-                    <small class="text-muted">Total de pedidos mes passado: 70</small>
+                    <div class="products">
+                        <span class="material-symbols-outlined">forklift</span>
+                        <div class="middle">
+                            <div class="left">
+                                <h3>Produtos em estoque</h3>
+                                <h1>600</h1>
+                            </div>
+                            <div class="progress">
+                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
+                                <div class="number"><p>81%</p></div>
+                            </div>
+                        </div>
+                        <small class="text-muted">Producao total do mes passado: 2000</small>
+                    </div>
+                    <div class="orders">
+                        <span class="material-symbols-outlined">package_2</span>
+                        <div class="middle">
+                            <div class="left">
+                                <h3>pedidos em andamento</h3>
+                                <h1>8</h1>
+                            </div>
+                            <div class="progress">
+                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
+                                <div class="number"><p>81%</p></div>
+                            </div>
+                        </div>
+                        <small class="text-muted">Total de pedidos mes passado: 70</small>
+                    </div>
                 </div>
 
+                <div class="recent-order">
+                    <h2>Ultimos pedidos</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th><th>Produto</th><th>Quantidade</th><th>Pagamento</th><th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pedido in pedidos %} <!-- Exemplo, se houver lista de pedidos -->
+                            <tr>
+                                <td>{{ pedido.cliente }}</td>
+                                <td>{{ pedido.produto }}</td>
+                                <td>{{ pedido.quantidade }}</td>
+                                <td>{{ pedido.pagamento }}</td>
+                                <td class="warning">{{ pedido.status }}</td>
+                                <td class="primary">Details</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="#">Mostrar tudo</a>
+                </div>
             </div>
 
-            <div class="recent-order">
-                <h2>Ultimos pedidos</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                Cliente
-                            </th>
-                            <th>
-                                Produto
-                            </th>
-                            <th>
-                                Quantidade
-                            </th>
-                            <th>
-                                Pagamento
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                        <tr>
-                            <td>Bramil</td>
-                            <td>Natural</td>
-                            <td>600</td>
-                            <td>Boleto</td>
-                            <td class="warning">Pendente</td>
-                            <td class="primary">Details</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <a href="#">Mostrar tudo</a>
+            <!-- Seção Estoque -->
+            <div id="estoque-section" style="display: none;">
+                <h2>Estoque de Insumos</h2>
+
+                <form method="post" action="/insumos/add">
+                    <input type="text" name="nome" placeholder="Nome" required>
+                    <input type="number" name="quantidade" placeholder="Quantidade" required>
+                    <input type="text" name="unidade" placeholder="Unidade (ml, g, un)" required>
+                    <button type="submit">Adicionar</button>
+                </form>
+
+                <hr>
+
+                <div class="cards">
+                    {% for insumo in insumos %}
+                    <div class="card">
+                        <h3>{{ insumo[1] }}</h3>
+                        <p>{{ insumo[2] }} {{ insumo[3] }}</p>
+
+                        <form method="post" action="/insumos/update">
+                            <input type="hidden" name="id" value="{{ insumo[0] }}">
+                            <input type="number" name="quantidade">
+                            <button type="submit">Atualizar</button>
+                        </form>
+
+                        <form method="post" action="/insumos/delete">
+                            <input type="hidden" name="id" value="{{ insumo[0] }}">
+                            <button type="submit">Remover</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
+
+            <!-- Outras seções (Clientes, Pedidos, etc.) podem ser adicionadas aqui -->
         </main>
+
         <div class="right">
             <div class="top">
                 <button id="menu-btn">
@@ -247,7 +204,8 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
 </body>
-<script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
 
 </html>

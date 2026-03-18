@@ -24,7 +24,7 @@
 
                 <div class="form">
                     <label for="username">Usuário</label>
-                    <input type="text" id="username" name="username" placeholder="Usuário" required>
+                    <input type="text" id="username" name="username" placeholder="Usuário" value="{{ username or '' }}" required>
                 </div>
 
                 <div class="form">
@@ -34,9 +34,9 @@
 
                 <button class="btn-login" type="submit">Entrar</button>
 
-                {% if error %}
+                {% if erro %}
                 <div class="error-message">
-                    Usuário ou senha inválidos
+                    {{ erro }}
                 </div>
                 {% endif %}
             </form>

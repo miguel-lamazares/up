@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv
 
 from app.middleware import AuthMiddleware
 from app import routes
+
+load_dotenv()
 
 app = FastAPI()
 
@@ -10,11 +13,4 @@ app.add_middleware(AuthMiddleware)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-app.get("/")(routes.login_page)
-app.get("/login")(routes.login_page)
-
-app.post("/login")(routes.login)
-
-app.get("/dashboard")(routes.dashboard)
-
-app.get("/logout")(routes.logout)
+app.include_router(routes.router)

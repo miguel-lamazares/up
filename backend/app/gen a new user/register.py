@@ -1,10 +1,16 @@
 from passlib.context import CryptContext
 import os
 
-PEPPER = os.getenv("PASSWORD_PEPPER")
-pwd = CryptContext(schemes=["bcrypt"])
+pwd_context = CryptContext(schemes=["bcrypt"], bcrypt__rounds=12)
 
-print(pwd.hash("password" + f"{PEPPER}"))
+PEPPER = "crenilda"
 
-# INSERT INTO usuarios (username,password)
-# VALUES ('admin','HASH');
+def gerar_hash(password: str):
+    return pwd_context.hash(password + PEPPER)
+
+
+# exemplo
+senha = "Admin@123"
+hash_final = gerar_hash(senha)
+
+print(hash_final)
