@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 260 30% 11%;
+    --foreground: 0 0% 100%;
+
+    --card: 260 25% 16%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 260 25% 16%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 153 100% 50%;
+    --primary-foreground: 260 30% 11%;
+
+    --secondary: 260 20% 22%;
+    --secondary-foreground: 210 20% 82%;
+
+    --muted: 260 15% 20%;
+    --muted-foreground: 213 14% 75%;
+
+    --accent: 260 20% 22%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 348 100% 65%;
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 45 100% 69%;
+    --warning-foreground: 260 30% 11%;
+
+    --success: 153 100% 50%;
+    --success-foreground: 260 30% 11%;
+
+    --border: 260 15% 24%;
+    --input: 260 18% 22%;
+    --ring: 153 100% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 260 25% 15%;
+    --sidebar-foreground: 213 14% 75%;
+    --sidebar-primary: 153 100% 50%;
+    --sidebar-primary-foreground: 260 30% 11%;
+    --sidebar-accent: 153 100% 50% / 0.1;
+    --sidebar-accent-foreground: 153 100% 50%;
+    --sidebar-border: 260 15% 24%;
+    --sidebar-ring: 153 100% 50%;
+
+    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.34);
+    --glow-primary: 0 0 20px rgba(0, 255, 136, 0.15);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h1 { @apply text-2xl font-extrabold tracking-tight; }
+  h2 { @apply text-xl font-semibold; }
+  h3 { @apply text-sm font-medium; }
+}
+
+@layer utilities {
+  .card-glass {
+    @apply bg-card rounded-xl border border-border/50;
+    box-shadow: var(--card-shadow);
+  }
+
+  .glow-border {
+    box-shadow: var(--glow-primary);
+  }
+
+  .progress-ring {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transform-origin: center;
+    transform: rotate(-90deg);
+  }
+}
