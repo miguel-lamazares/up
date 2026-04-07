@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* ======================= VARIÁVEIS ======================= */
 :root {
     --color-primary: #00ff88;
     --color-danger: #ff4d6d;
@@ -22,8 +23,7 @@
     --box-shadow: 0 10px 40px #00000056;
 }
 
-
-
+/* ======================= RESET ======================= */
 * {
     margin: 0;
     padding: 0;
@@ -35,63 +35,33 @@
     box-sizing: border-box;
 }
 
-html {
-    font-size: 14px;
-
-}
-
+html { font-size: 14px; }
 body {
     width: 100vw;
     height: 100vh;
-    font-family: poppins, sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.88rem;
-    background: #201b2c;
-    color: white;
+    background: var(--color-background);
+    color: var(--color-dark);
     user-select: none;
     overflow-x: hidden;
 }
 
-.container {
-    display: grid;
-    width: 96%;
-    margin: 0 auto;
-    gap: 1.8rem;
-    grid-template-columns: 14rem auto;
-}
+/* ======================= TIPOGRAFIA ======================= */
+h1 { font-weight: 800; font-size: 1.8rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 0.87rem; }
+h4 { font-size: 0.8rem; }
+h5 { font-size: 0.77rem; }
+small { font-size: 0.76rem; }
 
-a {
-    color: var(--color-dark);
-}
-
-.logo {
-    display: block;
-    width: 100%;
-}
-
-h1 {
-    font-weight: 800;
-    font-size: 1.8rem;
-}
-
-h2 {
-    font-size: 1.4rem;
-}
-
-h3 {
-    font-size: 0.87rem;
-}
-
-h4 {
-    font-size: 0.8rem;
-}
-
-h5 {
-    font-size: 0.77rem;
-}
-
-small {
-    font-size: 0.76rem;
-}
+p { color: var(--color-dark-varient); }
+b { color: var(--color-dark); }
+.text-muted { color: var(--color-info-dark); }
+.primary { color: var(--color-primary); }
+.danger { color: var(--color-danger); }
+.success { color: var(--color-success); }
+.warning { color: var(--color-warning); }
 
 .profile-photo {
     width: 2.8rem;
@@ -100,71 +70,44 @@ small {
     overflow: hidden;
 }
 
-.text-muted {
-    color: var(--color-info-dark);
+a { color: var(--color-dark); }
+
+/* ======================= CONTAINER ======================= */
+.container {
+    display: grid;
+    width: 96%;
+    margin: 0 auto;
+    gap: 1.8rem;
+    grid-template-columns: 14rem auto;
 }
 
-p {
-    color: var(--color-dark-varient);
-}
-
-b {
-    color: var(--color-dark);
-}
-
-.primary {
-    color: var(--color-primary);
-}
-
-.danger {
-    color: var(--color-danger);
-}
-
-.success {
-    color: var(--color-success);
-}
-
-.warning {
-    color: var(--color-warning);
-}
-
+/* ======================= SIDEBAR ======================= */
 aside {
     height: 100vh;
+    background: var(--color-white);
 }
 
 aside .top {
-    background: #2f2841;
+    background: var(--color-white);
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     padding: 1.4rem;
     border-bottom: 1px solid var(--color-light);
 }
 
-
 aside .logo {
     display: flex;
-    gap: 0.8rem;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
 }
+aside .logo img { width: 8rem; height: 8rem; }
 
-aside .logo img {
-    width: 8rem;
-    height: 8rem;
-
-}
-
-aside .close {
-    display: none;
-}
-
-
-/* ========================================SIDEBAR */
-
+aside .close { display: none; }
 
 aside .sidebar {
-    background: #2f2841;
+    background: var(--color-white);
     display: flex;
     flex-direction: column;
     height: 76%;
@@ -172,114 +115,82 @@ aside .sidebar {
     top: 1rem;
 }
 
-aside h3 {
-    font-weight: 500;
-}
+aside h3 { font-weight: 500; }
 
 aside .sidebar a {
     display: flex;
-    color: #cbd5e1;
-    margin-left: 2rem;
-    gap: 1rem;
     align-items: center;
+    gap: 1rem;
+    margin-left: 2rem;
     position: relative;
     height: 3.7rem;
-    transition: all 300ms ease;
+    color: var(--color-info-dark);
+    transition: all 0.3s ease;
 }
 
-aside .sidebar a span {
-    font-size: 1.6rem;
-    transition: all 300ms ease;
-}
-
+aside .sidebar a span { font-size: 1.6rem; transition: all 0.3s ease; }
 aside .sidebar a:last-child {
     position: absolute;
     bottom: 2rem;
     width: 100%;
-
 }
 
-aside .sidebar a .active {
-    background: rgba(0, 255, 136, 0.1);
-    color: #00ff88;
+aside .sidebar a.active {
+    background: var(--color-light);
+    color: var(--color-primary);
     margin-left: 0;
 }
-
 aside .sidebar a.active::before {
     content: '';
     width: 6px;
     height: 100%;
     background: var(--color-primary);
+    position: absolute;
+    left: 0;
 }
-
 aside .sidebar a.active span {
     color: var(--color-primary);
     margin-left: calc(1rem - 3px);
 }
+aside .sidebar a:hover { color: var(--color-primary); }
+aside .sidebar a:hover span { margin-left: 1rem; }
 
-aside .sidebar a:hover {
-    color: var(--color-primary)
-}
-
-aside .sidebar a:hover span {
-    margin-left: 1rem;
-
-}
-
-
-
-/* ========================================Main */
-
-
-main {
-    margin-top: 1.4rem;
-}
+/* ======================= MAIN ======================= */
+main { margin-top: 1.4rem; }
 
 main .insights {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.6rem;
 }
-
 main .insights>div {
     background: var(--color-white);
     padding: var(--card-padding);
     border-radius: var(--card-border-radius);
     margin-top: 1rem;
     box-shadow: var(--box-shadow);
-    transition: all 300ms ease;
+    transition: all 0.3s ease;
 }
+main .insights>div:hover { box-shadow: none; }
 
-main .insights>div:hover {
-    box-shadow: none;
-}
-
-main .insights>div span {
+main .insights span {
+    display: inline-block;
     background: var(--color-primary);
     padding: 0.5rem;
     border-radius: 50%;
     color: var(--color-white);
     font-size: 2rem;
 }
+main .insights .products span { background: var(--color-danger); }
+main .insights .orders span { background: var(--color-success); }
 
-main .insights>div.products span {
-    background: var(--color-danger);
-}
-
-main .insights>div.orders span {
-    background: var(--color-success);
-}
-
-main .insights>div .middle {
+main .insights .middle {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 }
 
-main .insights h3 {
-    margin: 1rem 0 0.6rem;
-    font-size: 1rem;
-}
+main .insights h3 { margin: 1rem 0 0.6rem; font-size: 1rem; }
 
 main .insights .progress {
     position: relative;
@@ -287,64 +198,205 @@ main .insights .progress {
     height: 92px;
     border-radius: 50%;
 }
-
-main .insights svg {
-    width: 7rem;
-    height: 7rem;
-}
-
-main .insights svg circle {
-    fill: none;
-    stroke: var(--color-primary);
-    stroke-width: 14;
-    stroke-linecap: round;
-    transform: translate(5px, 5px);
-}
-
-main .insights .sales svg circle {
-    stroke-dashoffset: -30;
-    stroke-dasharray: 200;
-}
-
-main .insights .products svg circle {
-    stroke-dashoffset: 20;
-    stroke-dasharray: 80;
-}
-
-main .insights .orders svg circle {
-    stroke-dashoffset: 35;
-    stroke-dasharray: 110;
-}
+main .insights svg { width: 7rem; height: 7rem; }
+main .insights svg circle { fill: none; stroke: var(--color-primary); stroke-width: 14; stroke-linecap: round; transform: translate(5px,5px); }
+main .insights .sales svg circle { stroke-dashoffset: -30; stroke-dasharray: 200; }
+main .insights .products svg circle { stroke-dashoffset: 20; stroke-dasharray: 80; }
+main .insights .orders svg circle { stroke-dashoffset: 35; stroke-dasharray: 110; }
 
 main .insights .progress .number {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+main .insights small { margin-top: 1.3rem; display: block; }
 
-main .insights small {
-    margin-top: 1.3rem;
-    display: block;
-}
-
-
-/* ========================================recent orders */
-
-
-main .recent-order {
-    margin-top: 2rem;
-}
-
-main .recent-order h2 {
-    margin-bottom: 0.8rem;
-}
+/* ======================= TABLES ======================= */
+main .recent-order { margin-top: 2rem; }
+main .recent-order h2 { margin-bottom: 0.8rem; }
 
 main .recent-order table {
+    width: 100%;
+    background: var(--color-white);
+    border-radius: var(--card-border-radius);
+    padding: var(--card-padding);
+    text-align: center;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+main .recent-order table:hover { box-shadow: none; }
+
+main table tbody td {
+    height: 2.8rem;
+    border-bottom: 1px solid var(--color-light);
+    color: var(--color-dark-varient);
+}
+main table tbody tr:last-child td { border: none; }
+main .recent-order a { display: block; text-align: center; margin: 1rem auto; color: var(--color-primary); }
+
+/* ======================= RIGHT PANEL ======================= */
+.right { position: fixed; top: 1rem; right: 1.5rem; z-index: 999; }
+.right .top { display: flex; align-items: center; gap: 1rem; }
+
+/* ======================= ESTOQUE ======================= */
+#estoque-section .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+#estoque-section .card {
+    background: var(--color-white);
+    padding: 1rem;
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s ease;
+}
+#estoque-section .card:hover { box-shadow: none; }
+#estoque-section .card h3 { margin-bottom: 0.5rem; color: var(--color-primary); }
+#estoque-section .card p { font-size: 1.2rem; font-weight: 600; }
+
+#estoque-section form {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+#estoque-section form input {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-info-light);
+    background: var(--color-info-light);
+    color: var(--color-dark);
+}
+#estoque-section form button {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+#estoque-section form button:hover { opacity: 0.8; }
+
+.section { width: 100%; }
+.lotes { margin-top: 0.5rem; font-size: 0.8rem; color: var(--color-info-dark); }
+.lote-item { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+.modal-content {
+    background: #2a2440;
+    padding: 20px;
+    border-radius: 12px;
+    min-width: 320px;
+}
+.modal-content input { width: 100%; margin: 10px 0; }
+
+.popup {
+    position: fixed;
+    top: 20%;
+    left: 35%;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 999;
+    border-radius: 10px;
+}
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ======================= MEDIA QUERIES ======================= */
+@media screen and (max-width: 1200px) {
+    .container { width: 94%; grid-template-columns: 7rem auto 23rem; }
+    aside .logo h2 { display: none; }
+    aside .sidebar h3 { display: none; }
+    aside .sidebar a { width: 5.6rem; }
+    aside .sidebar a:last-child { position: relative; margin-top: 1.8rem; }
+    main .insights { grid-template-columns: 1fr; gap: 0; }
+    main .recent-order {
+        width: 94%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 2rem 0 0 8.8rem;
+    }
+    main .recent-order table { width: 83vw; }
+    main table tbody tr td:first-child,
+    main table tbody tr td:last-child { display: none; }
+}
+
+@media screen and (max-width: 768px){
+    .container { width:100%; grid-template-columns:1fr; }
+    .menu-btn {
+        position: fixed; top:1rem; left:1rem; font-size:1.8rem;
+        background:none; color:white; cursor:pointer; z-index:1001;
+    }
+    aside {
+        position: fixed; top:0; left:-100%; width:260px; height:100vh; background: var(--color-white);
+        z-index:1000; transition:left .3s ease; padding-top:4rem;
+    }
+    aside.active { left:0; }
+    aside .close { display:block; top:1rem; right:1rem; font-size:1.5rem; cursor:pointer; position:absolute; }
+    aside .logo img { width:4rem; height:auto; }
+    main { margin-top:4rem; padding:1rem; }
+    main .insights { grid-template-columns:1fr; }
+}
+
+/* ======================= PEDIDOS =================== */
+
+/* Container da seção de pedidos */
+#pedidos-section {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+/* Cards de pedidos (resumo ou destaques) */
+#pedidos-section .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#pedidos-section .card {
+    background: var(--color-white);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--box-shadow);
+    transition: all 300ms ease;
+}
+
+#pedidos-section .card:hover {
+    box-shadow: none;
+}
+
+#pedidos-section .card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--color-primary);
+}
+
+#pedidos-section .card p {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Tabela de pedidos recentes */
+#pedidos-section table {
     background: var(--color-white);
     width: 100%;
     border-radius: var(--card-border-radius);
@@ -354,228 +406,86 @@ main .recent-order table {
     transition: all 300ms ease;
 }
 
-main .recent-order table:hover {
+#pedidos-section table:hover {
     box-shadow: none;
 }
 
-main table tbody td {
+#pedidos-section table tbody td {
     height: 2.8rem;
     border-bottom: 1px solid var(--color-light);
     color: var(--color-dark-varient);
 }
 
-main table tbody tr:last-child td {
+#pedidos-section table tbody tr:last-child td {
     border: none;
 }
 
-main .recent-order a {
-    text-align: center;
-    display: block;
-    margin: 1rem auto;
-    color: var(--color-primary);
-}
-
-
-.right {
-    position: fixed;
-    top: 1rem;
-    right: 1.5rem;
-    z-index: 999;
-}
-
-.right .top {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-
-
-/*nigga this part is about media queries, is that ok?*/
-
-@media screen and (max-width: 1200px) {
-    .container{
-        width: 94%;
-        grid-template-columns: 7rem auto 23rem;
-    }
-
-    aside .logo h2{
-        display: none;
-    }
-
-    aside .sidebar h3 {
-        display: none;
-    }
-
-    aside .sidebar a {
-        width: 5.6rem;
-    }
-
-    aside .sidebar a:last-child{
-        position: relative;
-        margin-top: 1.8rem;
-    }
-
-    main .insights {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    main .recent-order {
-        width: 94%;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        margin: 2rem 0 0 8.8rem;
-    }
-
-    main .recent-order table {
-        width: 83vw;
-    }
-
-    main table tbody tr td:last-child, main table tbody tr td:first-child {
-        display: none;
-
-    } 
-
-}
-
-
-
-@media screen and (max-width: 768px){
-
-.container{
-    width:100%;
-    grid-template-columns:1fr;
-}
-
-/* botão menu */
-
-.menu-btn{
-    position:fixed;
-    top:1rem;
-    left:1rem;
-    font-size:1.8rem;
-    background:none;
-    color:white;
-    cursor:pointer;
-    z-index:1001;
-}
-
-/* sidebar escondida */
-
-aside{
-    position:fixed;
-    top:0;
-    left:-100%;
-    width:260px;
-    height:100vh;
-    background:#2f2841;
-    z-index:1000;
-    transition:left .3s ease;
-    padding-top:4rem;
-}
-
-/* sidebar aberta */
-
-aside.active{
-    left:0;
-}
-
-/* botão fechar */
-
-aside .close{
-    position:absolute;
-    top:1rem;
-    right:1rem;
-    font-size:1.5rem;
-    cursor:pointer;
-    display:block;
-}
-
-/* logo menor */
-
-aside .logo img{
-    width:4rem;
-    height:auto;
-}
-
-/* conteúdo */
-
-main{
-    margin-top:4rem;
-    padding:1rem;
-}
-
-/* cards stack */
-
-main .insights{
-    grid-template-columns:1fr;
-}
-
-}
-
-
-/* Estilo para os cards de estoque */
-#estoque-section .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-#estoque-section .card {
-    background: var(--color-white);
-    padding: 1rem;
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--box-shadow);
-    transition: all 300ms ease;
-}
-
-#estoque-section .card:hover {
-    box-shadow: none;
-}
-
-#estoque-section .card h3 {
-    margin-bottom: 0.5rem;
-    color: var(--color-primary);
-}
-
-#estoque-section .card p {
-    font-size: 1.2rem;
-    font-weight: 600;
-}
-
-#estoque-section form {
-    margin-top: 0.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-#estoque-section form input {
-    padding: 0.5rem;
+/* Status do pedido */
+#pedidos-section .status {
+    padding: 0.3rem 0.7rem;
     border-radius: 0.5rem;
-    border: 1px solid var(--color-info-light);
-    background: var(--color-info-light);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+#pedidos-section .status.pendente {
+    background: var(--color-warning);
     color: var(--color-dark);
 }
 
-#estoque-section form button {
-    padding: 0.5rem;
+#pedidos-section .status.concluido {
+    background: var(--color-success);
+    color: var(--color-dark);
+}
+
+#pedidos-section .status.cancelado {
+    background: var(--color-danger);
+    color: var(--color-dark);
+}
+
+/* Botões de ação nos pedidos */
+#pedidos-section button {
+    padding: 0.5rem 0.8rem;
     border-radius: 0.5rem;
-    background: var(--color-primary);
-    color: #2f2841;
     font-weight: 600;
     cursor: pointer;
     border: none;
     transition: all 300ms ease;
 }
 
-#estoque-section form button:hover {
-    opacity: 0.8;
+#pedidos-section button.view {
+    background: var(--color-info-dark);
+    color: var(--color-dark);
 }
 
-.section {
-    width: 100%;
+#pedidos-section button.edit {
+    background: var(--color-primary);
+    color: var(--color-dark);
+}
+
+#pedidos-section button.delete {
+    background: var(--color-danger);
+    color: var(--color-dark);
+}
+
+#pedidos-section button:hover {
+    opacity: 0.85;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+    #pedidos-section .cards {
+        grid-template-columns: 1fr;
+    }
+
+    #pedidos-section table {
+        width: 100%;
+        font-size: 0.8rem;
+    }
+
+    #pedidos-section button {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
 }

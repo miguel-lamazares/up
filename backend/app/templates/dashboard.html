@@ -72,7 +72,7 @@
                     <h3>Analytics</h3>
                 </a>
 
-                <a href="logout" id="logout">
+                <a href="/logout" id="logout">
                     <span>
                         <img width="32" height="32" src="https://img.icons8.com/liquid-glass-color/32/exit.png">
                     </span>
@@ -95,8 +95,12 @@
                                 <h1>25,000</h1>
                             </div>
                             <div class="progress">
-                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                                <div class="number"><p>81%</p></div>
+                                <svg>
+                                    <circle cx="38" cy="38" r="36"></circle>
+                                </svg>
+                                <div class="number">
+                                    <p>81%</p>
+                                </div>
                             </div>
                         </div>
                         <small class="text-muted">Total de vendas mes passados: 205.500</small>
@@ -109,8 +113,12 @@
                                 <h1>600</h1>
                             </div>
                             <div class="progress">
-                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                                <div class="number"><p>81%</p></div>
+                                <svg>
+                                    <circle cx="38" cy="38" r="36"></circle>
+                                </svg>
+                                <div class="number">
+                                    <p>81%</p>
+                                </div>
                             </div>
                         </div>
                         <small class="text-muted">Producao total do mes passado: 2000</small>
@@ -123,8 +131,12 @@
                                 <h1>8</h1>
                             </div>
                             <div class="progress">
-                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                                <div class="number"><p>81%</p></div>
+                                <svg>
+                                    <circle cx="38" cy="38" r="36"></circle>
+                                </svg>
+                                <div class="number">
+                                    <p>81%</p>
+                                </div>
                             </div>
                         </div>
                         <small class="text-muted">Total de pedidos mes passado: 70</small>
@@ -136,11 +148,16 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Cliente</th><th>Produto</th><th>Quantidade</th><th>Pagamento</th><th>Status</th>
+                                <th>Cliente</th>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Pagamento</th>
+                                <th>Status</th>
+                                <th>Detalhes</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for pedido in pedidos %} <!-- Exemplo, se houver lista de pedidos -->
+                            {% for pedido in pedidos %}
                             <tr>
                                 <td>{{ pedido.cliente }}</td>
                                 <td>{{ pedido.produto }}</td>
@@ -156,14 +173,124 @@
                 </div>
             </div>
 
+            <!-- Seção Pedidos -->
+            <div id="pedidos-section" style="display:none;">
+                <h2>Pedidos</h2>
+
+                <!-- Formulário para novo pedido -->
+                <form id="form-pedido" method="post" action="/pedidos/add">
+                    <input type="text" name="cliente" placeholder="Nome do cliente" required>
+
+                    <select name="forma_pagamento" required>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="cartao">Cartão</option>
+                        <option value="pix">PIX</option>
+                    </select>
+
+                    <div id="produtos-pedido">
+                        <div class="produto-item">
+                            <select name="produtos[0][id]">
+                                {% for produto in produtos %}
+                                <option value="{{ produto.id }}">{{ produto.nome }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="number" name="produtos[0][quantidade]" placeholder="Quantidade" min="1">
+                            <button type="button" onclick="removerProduto(this)">-</button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="adicionarProduto()">Adicionar Produto</button>
+                    <button type="submit">Registrar Pedido</button>
+                </form>
+
+                <hr>
+
+                <!-- Cards de pedidos -->
+                <div class="cards">
+                    {% for pedido in pedidos %}
+                    <div class="card">
+                        <h3>Pedido #{{ pedido.id }} - {{ pedido.cliente }}</h3>
+                        <p>Status: {{ pedido.status }}</p>
+                        <p>Data: {{ pedido.data_pedido.strftime("%d/%m/%Y %H:%M") }}</p>
+                        <p>Forma de pagamento: {{ pedido.forma_pagamento }}</p>
+                        <p>Valor total: R$ {{ pedido.valor_total }}</p>
+
+                        <h4>Produtos:</h4>
+                        <ul>
+                            {% for item in pedido.itens %}
+                            <li>{{ item.quantidade }} x {{ item.produto.nome }} (R$ {{ item.valor_unitario }})</li>
+                            {% endfor %}
+                        </ul>
+
+                        <form method="post" action="/pedidos/update">
+                            <input type="hidden" name="pedido_id" value="{{ pedido.id }}">
+                            <select name="status">
+                                <option value="aberto" {% if pedido.status=='aberto' %}selected{% endif %}>Aberto
+                                </option>
+                                <option value="concluido" {% if pedido.status=='concluido' %}selected{% endif %}>
+                                    Concluído</option>
+                                <option value="cancelado" {% if pedido.status=='cancelado' %}selected{% endif %}>
+                                    Cancelado</option>
+                            </select>
+                            <button type="submit">Atualizar</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="produtos-section" style="display:none;">
+                <h2>Produtos Acabados</h2>
+
+                <form method="post" action="/produtos/add">
+                    <select name="produto_nome" required>
+                        <option value="">Selecione</option>
+                        <option value="Coco 200ml">Coco 200ml</option>
+                        <option value="Coco 500ml">Coco 500ml</option>
+                        <option value="Coco 1L">Coco 1L</option>
+                        <option value="Polpa A">Polpa A</option>
+                        <option value="Polpa B">Polpa B</option>
+                        <option value="Polpa C">Polpa C</option>
+                    </select>
+
+                    <input type="number" name="quantidade" min="1" required>
+                    <input type="text" name="lote" placeholder="Lote" required>
+                    <input type="date" name="validade" required>
+                    <button type="submit">Registrar</button>
+                </form>
+
+                <hr>
+
+                <div class="cards">
+                    {% for produto in produtos %}
+                    <div class="card">
+                        <h3>{{ produto.nome }}</h3>
+                        <p>Total: {{ produto.quantidade }} {{ produto.unidade }}</p>
+
+                        {% if produto.lotes %}
+                        {% for lote in produto.lotes %}
+                        <div class="lote-info">
+                            <small>
+                                <h4>Lote {{ lote.lote }}</h4>
+                                <h4>Vence em {{ lote.validade }}</h4>
+                            </small>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <small>Sem lotes cadastrados</small>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             <!-- Seção Estoque -->
             <div id="estoque-section" style="display: none;">
                 <h2>Estoque de Insumos</h2>
 
-                <form method="post" action="/insumos/add">
+                <form method="post" action="/insumos/lote/add">
                     <input type="text" name="nome" placeholder="Nome" required>
-                    <input type="number" name="quantidade" placeholder="Quantidade" required>
+                    <input type="number" step="0.01" name="quantidade" placeholder="Quantidade" required>
                     <input type="text" name="unidade" placeholder="Unidade (ml, g, un)" required>
+                    <input type="text" name="lote" placeholder="Lote (opcional)">
+                    <input type="date" name="validade">
                     <button type="submit">Adicionar</button>
                 </form>
 
@@ -172,40 +299,98 @@
                 <div class="cards">
                     {% for insumo in insumos %}
                     <div class="card">
-                        <h3>{{ insumo[1] }}</h3>
-                        <p>{{ insumo[2] }} {{ insumo[3] }}</p>
+                        <h3>{{ insumo.nome }}</h3>
+                        <p>Total: {{ insumo.quantidade }} {{ insumo.unidade }}</p>
 
-                        <form method="post" action="/insumos/update">
-                            <input type="hidden" name="id" value="{{ insumo[0] }}">
-                            <input type="number" name="quantidade">
-                            <button type="submit">Atualizar</button>
-                        </form>
+                        {% if insumo.lotes %}
+                        {% for lote in insumo.lotes %}
+                        <div class="lote-info">
+                            <small>
+                                <h4>Lote {{ lote.lote }}</h4>
+                                {% if lote.validade %}
+                                <h4> vence em {{ lote.validade }}</h4>
+                                {% else %}
+                                <h4>não perecível</h4>
+                                {% endif %}
+                            </small>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <small>Sem lotes cadastrados</small>
+                        {% endif %}
 
-                        <form method="post" action="/insumos/delete">
-                            <input type="hidden" name="id" value="{{ insumo[0] }}">
+                        <button onclick="abrirPopup('{{ insumo.id }}')">Editar</button>
+
+                        <form method="post" action="/insumos/delete" style="margin-top:10px;">
+                            <input type="hidden" name="id" value="{{ insumo.id }}">
                             <button type="submit">Remover</button>
                         </form>
+                    </div>
+
+                    <div id="popup-{{ insumo.id }}" class="popup" style="display:none;">
+                        <div class="popup-content">
+                            <h3>Editar {{ insumo.nome }}</h3>
+
+                            <form method="post" action="/insumos/update">
+                                <input type="hidden" name="id" value="{{ insumo.id }}">
+                                <input type="number" step="0.01" name="quantidade" placeholder="Adicionar ou subtrair">
+                                <button type="submit">Salvar</button>
+                            </form>
+
+                            <button onclick="fecharPopup('{{ insumo.id }}')">Fechar</button>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
-
-            <!-- Outras seções (Clientes, Pedidos, etc.) podem ser adicionadas aqui -->
         </main>
 
         <div class="right">
             <div class="top">
-                <button id="menu-btn">
-                    <span>☰</span>
-                </button>
-                <div class="close" id="close-btn">
-                    <span>✕</span>
-                </div>
+                <!-- Espaço reservado para futuras notificações / resumo rápido -->
             </div>
         </div>
     </div>
 
-    <script src="{{ url_for('static', path='js/dashboard.js') }}"></script>
+    <script>
+        // Controle de abas
+        const links = document.querySelectorAll('.sidebar a[data-section]');
+        const sections = document.querySelectorAll('main > div[id$="-section"]');
+
+        links.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                sections.forEach(sec => sec.style.display = 'none');
+                document.getElementById(link.dataset.section + '-section').style.display = 'block';
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Formulário de produtos dinâmico
+        let contadorProduto = 1;
+
+        function adicionarProduto() {
+            const container = document.getElementById('produtos-pedido');
+            const div = document.createElement('div');
+            div.classList.add('produto-item');
+            div.innerHTML = `
+                <select name="produtos[${contadorProduto}][id]">
+                    {% for produto in produtos %}
+                    <option value="{{ produto.id }}">{{ produto.nome }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="produtos[${contadorProduto}][quantidade]" placeholder="Quantidade" min="1">
+                <button type="button" onclick="removerProduto(this)">-</button>
+            `;
+            container.appendChild(div);
+            contadorProduto++;
+        }
+
+        function removerProduto(btn) {
+            btn.parentElement.remove();
+        }
+    </script>
 </body>
 
 </html>

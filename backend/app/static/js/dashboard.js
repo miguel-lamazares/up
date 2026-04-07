@@ -1,79 +1,112 @@
-// Aguarda o DOM carregar
-document.addEventListener("DOMContentLoaded", function() {
-    // Elementos
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ======================= CONTROLE DE SEÇÕES =======================
     const sidebarLinks = document.querySelectorAll(".sidebar a[data-section]");
-    const dashboardSection = document.getElementById("dashboard-section");
-    const estoqueSection = document.getElementById("estoque-section");
-    const logoutLink = document.getElementById("logout");
+    const sections = document.querySelectorAll("main > div[id$='-section']");
 
-    // Função para mostrar a seção correta
     function showSection(sectionName) {
-        // Esconde todas as seções (por enquanto só temos duas, mas podemos esconder todas que começam com "section-")
-        // Ou podemos esconder manualmente:
-        if (dashboardSection) dashboardSection.style.display = "none";
-        if (estoqueSection) estoqueSection.style.display = "none";
+        sections.forEach(sec => sec.style.display = "none");
+        const target = document.getElementById(sectionName + "-section");
+        if (target) target.style.display = "block";
 
-        // Mostra a seção escolhida
-        if (sectionName === "dashboard" && dashboardSection) {
-            dashboardSection.style.display = "block";
-        } else if (sectionName === "estoque" && estoqueSection) {
-            estoqueSection.style.display = "block";
-        }
-
-        // Atualiza a classe active nos links da sidebar
-        sidebarLinks.forEach(link => {
-            link.classList.remove("active");
-            if (link.dataset.section === sectionName) {
-                link.classList.add("active");
-            }
-        });
-
-        // Atualiza o hash da URL (opcional)
-        if (sectionName === "dashboard") {
-            history.pushState(null, "", "/dashboard");
-        } else if (sectionName === "estoque") {
-            history.pushState(null, "", "/dashboard#estoque");
-        }
+        sidebarLinks.forEach(link => link.classList.remove("active"));
+        const activeLink = document.querySelector(`.sidebar a[data-section='${sectionName}']`);
+        if (activeLink) activeLink.classList.add("active");
     }
 
-    // Adiciona evento de clique nos links da sidebar (exceto logout)
     sidebarLinks.forEach(link => {
-        link.addEventListener("click", function(e) {
-            e.preventDefault(); // Evita o comportamento padrão do link
-            const section = this.dataset.section;
-            showSection(section);
+        link.addEventListener("click", e => {
+            e.preventDefault();
+            showSection(link.dataset.section);
         });
     });
 
-    // Verifica o hash na URL ao carregar a página
-    if (window.location.hash === "#estoque") {
-        showSection("estoque");
-    } else {
-        showSection("dashboard"); // padrão
+    // Inicializa exibindo a seção ativa ou dashboard
+    const activeLink = document.querySelector(".sidebar a.active");
+    if (activeLink) showSection(activeLink.dataset.section);
+    else showSection("dashboard");
+
+    // ======================= FORMULÁRIO DINÂMICO DE PRODUTOS =======================
+    let produtoCounter = 1;
+    const produtosContainer = document.getElementById("produtos-pedido");
+
+    window.adicionarProduto = function() {
+        const div = document.createElement("div");
+        div.classList.add("produto-item");
+        div.innerHTML = `
+            <select name="produtos[${produtoCounter}][id]">
+                {% for produto in produtos %}
+                <option value="{{ produto.id }}">{{ produto.nome }}</option>
+                {% endfor %}
+            </select>
+            <input type="number" name="produtos[${produtoCounter}][quantidade]" placeholder="Quantidade" min="1">
+            <button type="button" onclick="removerProduto(this)">-</button>
+        `;
+        produtosContainer.appendChild(div);
+        produtoCounter++;
     }
 
-    // Logout
-    if (logoutLink) {
-        logoutLink.addEventListener("click", function(e) {
-            e.preventDefault();
-            window.location.href = "/logout";
-        });
+    window.removerProduto = function(btn) {
+        btn.parentElement.remove();
     }
 
-    // Menu responsivo (já existente, mas ajustado)
-    const menuBtn = document.getElementById("menu-btn");
+    // ======================= POPUPS DE INSUMOS =======================
+    window.abrirPopup = function(id) {
+        const popup = document.getElementById(`popup-${id}`);
+        if (popup) popup.style.display = "flex";
+    }
+
+    window.fecharPopup = function(id) {
+        const popup = document.getElementById(`popup-${id}`);
+        if (popup) popup.style.display = "none";
+    }
+
+    // ======================= SIDEBAR MOBILE =======================
+    const sidebar = document.querySelector("aside");
     const closeBtn = document.getElementById("close-btn");
-    const aside = document.querySelector("aside");
-
-    if (menuBtn) {
-        menuBtn.addEventListener("click", function() {
-            aside.classList.add("active");
-        });
-    }
 
     if (closeBtn) {
-        closeBtn.addEventListener("click", function() {
-            aside.classList.remove("active");
-        });
+        closeBtn.addEventListener("click", () => sidebar.classList.remove("active"));
     }
+
+    const menuBtn = document.createElement("button");
+    menuBtn.className = "menu-btn";
+    menuBtn.textContent = "☰";
+    document.body.appendChild(menuBtn);
+
+    menuBtn.addEventListener("click", () => sidebar.classList.toggle("active"));
+
+    // ======================= LOGOUT =======================
+    const logoutLink = document.getElementById("logout");
+
+if (logoutLink) {
+    logoutLink.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        const confirmLogout = confirm("Deseja realmente sair?");
+        if (!confirmLogout) return;
+
+        try {
+            const response = await fetch("/logout", {
+                method: "POST",
+                credentials: "include", // mantém cookies/sessão
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": window.CSRF_TOKEN || "" // se usar CSRF
+                }
+            });
+
+            if (response.ok) {
+                // Redireciona para a página de login
+                window.location.href = "/login";
+            } else {
+                alert("Falha ao deslogar. Tente novamente.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Erro de rede no logout.");
+        }
+    });
+}
+
 });
