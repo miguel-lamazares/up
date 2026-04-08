@@ -1,106 +1,64 @@
-import { useEffect, useState } from "react";
-import { Plus, Minus } from "lucide-react";
-
-const produtosDisponiveis = [
-  { id: 1, nome: "Coco 200ml" },
-  { id: 2, nome: "Coco 500ml" },
-  { id: 3, nome: "Coco 1L" },
-  { id: 4, nome: "Polpa A" },
-  { id: 5, nome: "Polpa B" },
-  { id: 6, nome: "Polpa C" },
-];
+import { useState, useEffect } from "react";
+import { Plus, Minus, AlertCircle } from "lucide-react";
+import { listarPedidos, listarInsumos, criarPedido, cancelarPedido, Pedido, Insumo } from "@/services/api";
 
 const PedidosSection = () => {
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [produtosDisponiveis, setProdutosDisponiveis] = useState<Insumo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Form state
   const [cliente, setCliente] = useState("");
-  const [pagamento, setPagamento] = useState("Dinheiro");
-  const [produtos, setProdutos] = useState([
-    { id: 0, produtoId: 1, quantidade: "", valor: "" },
-  ]);
-  const [pedidos, setPedidos] = useState<any[]>([]);
+  const [formaPagamento, setFormaPagamento] = useState("Dinheiro");
+  const [itensForm, setItensForm] = useState([{ produtoId: 0, quantidade: "", valorUnitario: "" }]);
 
-  const token = localStorage.getItem("token");
-
-  const carregarPedidos = async () => {
-    const res = await fetch("/api/pedidos/list", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      setPedidos(data);
-    }
+  const fetchData = () => {
+    setLoading(true);
+    Promise.all([listarPedidos(), listarInsumos()])
+      .then(([p, i]) => {
+        setPedidos(p);
+        // Produtos acabados são insumos com unidade "un"
+        setProdutosDisponiveis(i);
+        if (i.length > 0 && itensForm[0].produtoId === 0) {
+          setItensForm([{ produtoId: i[0].id, quantidade: "", valorUnitario: "" }]);
+        }
+      })
+      .catch((e) => setError(e.message))
+      .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    carregarPedidos();
-  }, []);
+  useEffect(() => { fetchData(); }, []);
 
   const addProduto = () => {
-    setProdutos([
-      ...produtos,
-      {
-        id: produtos.length,
-        produtoId: 1,
-        quantidade: "",
-        valor: "",
-      },
-    ]);
+    const defaultId = produtosDisponiveis.length > 0 ? produtosDisponiveis[0].id : 0;
+    setItensForm([...itensForm, { produtoId: defaultId, quantidade: "", valorUnitario: "" }]);
   };
 
   const removeProduto = (index: number) => {
-    setProdutos(produtos.filter((_, i) => i !== index));
+    setItensForm(itensForm.filter((_, i) => i !== index));
   };
 
-  const registrarPedido = async () => {
-    const itens = produtos.map((p) => ({
-      produto_id: p.produtoId,
-      quantidade: Number(p.quantidade),
-      valor_unitario: Number(p.valor),
-    }));
+  const handleRegistrar = async () => {
+    if (!cliente.trim()) { alert("Informe o cliente."); return; }
+    const itens = itensForm
+      .filter((i) => i.quantidade && i.valorUnitario)
+      .map((i) => ({ produto_id: i.produtoId, quantidade: Number(i.quantidade), valor_unitario: Number(i.valorUnitario) }));
+    if (itens.length === 0) { alert("Adicione pelo menos um produto."); return; }
+    const valorTotal = itens.reduce((acc, i) => acc + i.quantidade * i.valor_unitario, 0);
 
-    const valor_total = itens.reduce(
-      (acc, item) => acc + item.quantidade * item.valor_unitario,
-      0
-    );
-
-    const res = await fetch("/api/pedidos/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        cliente,
-        forma_pagamento: pagamento,
-        valor_total,
-        itens,
-      }),
-    });
-
-    if (res.ok) {
+    try {
+      await criarPedido(cliente, formaPagamento, valorTotal, itens);
       setCliente("");
-      setProdutos([{ id: 0, produtoId: 1, quantidade: "", valor: "" }]);
-      carregarPedidos();
-    } else {
-      alert("Erro ao registrar pedido");
-    }
+      setFormaPagamento("Dinheiro");
+      setItensForm([{ produtoId: produtosDisponiveis[0]?.id || 0, quantidade: "", valorUnitario: "" }]);
+      fetchData();
+    } catch (e: any) { alert(e.message); }
   };
 
   const handleCancelar = async (pedidoId: number) => {
-    if (!confirm("Deseja cancelar este pedido?")) return;
-
-    const res = await fetch(`/api/pedidos/${pedidoId}/cancelar`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (res.ok) {
-      carregarPedidos();
-    }
+    if (!confirm("Deseja cancelar este pedido? Os produtos retornarão ao estoque.")) return;
+    try { await cancelarPedido(pedidoId); fetchData(); } catch (e: any) { alert(e.message); }
   };
 
   const statusColor: Record<string, string> = {
@@ -109,116 +67,126 @@ const PedidosSection = () => {
     cancelado: "bg-destructive/20 text-destructive",
   };
 
+  if (loading) return <div className="space-y-8"><h1>Pedidos</h1><p className="text-muted-foreground">Carregando...</p></div>;
+  if (error) return <div className="space-y-8"><h1>Pedidos</h1><div className="card-glass p-6 flex items-center gap-3 text-destructive"><AlertCircle size={20} /><p>{error}</p></div></div>;
+
   return (
     <div className="space-y-8">
       <h1>Pedidos</h1>
 
+      {/* Form */}
       <div className="card-glass p-6 space-y-4">
-        <h3 className="text-foreground text-base font-semibold">
-          Novo Pedido
-        </h3>
+        <h3 className="text-foreground text-base font-semibold">Novo Pedido</h3>
 
-        <input
-          value={cliente}
-          onChange={(e) => setCliente(e.target.value)}
-          placeholder="Cliente"
-          className="w-full px-4 py-2.5 rounded-lg bg-input border border-border/40"
-        />
+        <input value={cliente} onChange={(e) => setCliente(e.target.value)} placeholder="Cliente" className="w-full px-4 py-2.5 rounded-lg bg-input border border-border/40 text-foreground placeholder:text-muted-foreground text-sm" />
 
-        <select
-          value={pagamento}
-          onChange={(e) => setPagamento(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-lg bg-input border border-border/40"
-        >
+        <select value={formaPagamento} onChange={(e) => setFormaPagamento(e.target.value)} className="w-full px-4 py-2.5 rounded-lg bg-input border border-border/40 text-foreground text-sm">
           <option>Dinheiro</option>
           <option>Cartão</option>
           <option>PIX</option>
         </select>
 
-        {produtos.map((item, i) => (
-          <div key={item.id} className="flex gap-2 items-center">
+        {itensForm.map((item, i) => (
+          <div key={i} className="flex gap-2 items-center">
             <select
               value={item.produtoId}
               onChange={(e) => {
-                const novos = [...produtos];
-                novos[i].produtoId = Number(e.target.value);
-                setProdutos(novos);
+                const updated = [...itensForm];
+                updated[i] = { ...updated[i], produtoId: Number(e.target.value) };
+                setItensForm(updated);
               }}
-              className="flex-1 px-4 py-2.5 rounded-lg bg-input border border-border/40"
+              className="flex-1 px-4 py-2.5 rounded-lg bg-input border border-border/40 text-foreground text-sm"
             >
               {produtosDisponiveis.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nome}
-                </option>
+                <option key={p.id} value={p.id}>{p.nome}</option>
               ))}
             </select>
-
             <input
-              placeholder="Qtd"
-              type="number"
               value={item.quantidade}
               onChange={(e) => {
-                const novos = [...produtos];
-                novos[i].quantidade = e.target.value;
-                setProdutos(novos);
+                const updated = [...itensForm];
+                updated[i] = { ...updated[i], quantidade: e.target.value };
+                setItensForm(updated);
               }}
-              className="w-20 px-3 py-2.5 rounded-lg bg-input border border-border/40"
+              placeholder="Qtd" type="number" className="w-20 px-3 py-2.5 rounded-lg bg-input border border-border/40 text-foreground text-sm"
             />
-
             <input
-              placeholder="R$ Valor"
-              type="number"
-              value={item.valor}
+              value={item.valorUnitario}
               onChange={(e) => {
-                const novos = [...produtos];
-                novos[i].valor = e.target.value;
-                setProdutos(novos);
+                const updated = [...itensForm];
+                updated[i] = { ...updated[i], valorUnitario: e.target.value };
+                setItensForm(updated);
               }}
-              className="w-24 px-3 py-2.5 rounded-lg bg-input border border-border/40"
+              placeholder="R$ Valor" type="number" className="w-24 px-3 py-2.5 rounded-lg bg-input border border-border/40 text-foreground text-sm"
             />
-
-            <button onClick={() => removeProduto(i)}>
+            <button onClick={() => removeProduto(i)} className="p-2 rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition">
               <Minus size={16} />
             </button>
           </div>
         ))}
 
-        <button onClick={addProduto} className="flex items-center gap-2">
+        <button onClick={addProduto} className="flex items-center gap-2 text-sm text-primary hover:underline">
           <Plus size={16} /> Adicionar Produto
         </button>
 
-        <button
-          onClick={registrarPedido}
-          className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground"
-        >
+        <button onClick={handleRegistrar} className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition">
           Registrar Pedido
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {pedidos.map((pedido) => (
-          <div key={pedido.id} className="card-glass p-6 space-y-4">
-            <div className="flex justify-between">
-              <h3>Pedido #{pedido.id}</h3>
-              <span className={statusColor[pedido.status] || ""}>
-                {pedido.status}
-              </span>
-            </div>
+      {/* Pedidos Cards */}
+      {pedidos.length === 0 ? (
+        <div className="card-glass p-10 text-center">
+          <p className="text-muted-foreground">Nenhum pedido registrado.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {pedidos.map((pedido) => (
+            <div key={pedido.id} className="card-glass p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <h3 className="text-foreground text-base font-semibold">Pedido #{pedido.id}</h3>
+                <span className={`text-xs font-medium px-3 py-1 rounded-full ${statusColor[pedido.status] || ""}`}>
+                  {pedido.status}
+                </span>
+              </div>
 
-            <p>{pedido.cliente}</p>
-            <p>Pagamento: {pedido.forma_pagamento}</p>
-            <p>Valor: R$ {Number(pedido.valor_total).toFixed(2)}</p>
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>{pedido.cliente}</p>
+                <p>Data: {pedido.data_pedido}</p>
+                <p>Pagamento: {pedido.forma_pagamento}</p>
+                <p className="text-foreground font-semibold">Valor: R$ {Number(pedido.valor_total).toFixed(2)}</p>
+              </div>
 
-            <div className="flex gap-2">
-              {pedido.status !== "cancelado" && (
-                <button onClick={() => handleCancelar(pedido.id)}>
-                  Cancelar
-                </button>
+              {pedido.itens && pedido.itens.length > 0 && (
+                <div>
+                  <h3 className="text-foreground mb-2">Produtos:</h3>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    {pedido.itens.map((item, i) => (
+                      <li key={i}>• {item.quantidade}x (R$ {Number(item.valor_unitario).toFixed(2)})</li>
+                    ))}
+                  </ul>
+                </div>
               )}
+
+              <div className="flex gap-2 pt-2">
+                {pedido.status !== "cancelado" && (
+                  <button
+                    onClick={() => handleCancelar(pedido.id)}
+                    className="flex-1 py-2 rounded-lg bg-destructive/10 text-destructive text-xs font-medium hover:bg-destructive/20 transition"
+                  >
+                    Cancelar
+                  </button>
+                )}
+                {pedido.status === "aberto" && (
+                  <button className="flex-1 py-2 rounded-lg bg-success/10 text-success text-xs font-medium hover:bg-success/20 transition">
+                    Concluir
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

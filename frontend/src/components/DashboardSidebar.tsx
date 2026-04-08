@@ -25,23 +25,20 @@ const DashboardSidebar = ({ activeSection, onSectionChange }: DashboardSidebarPr
     setMobileOpen(false);
   };
 
-const handleLogout = async () => {
-  if (!confirm("Deseja realmente sair?")) return;
-
-  try {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-  } catch {
-    console.log("logout backend falhou, limpando sessão local");
-  }
-
-  localStorage.removeItem("token");
-  window.location.href = "/login";
-};
+  const handleLogout = async () => {
+    if (!confirm("Deseja realmente sair?")) return;
+    try {
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (res.ok) window.location.href = "/login";
+      else alert("Falha ao deslogar. Tente novamente.");
+    } catch {
+      alert("Erro de rede no logout.");
+    }
+  };
 
   const sidebarContent = (
     <div className="flex flex-col h-full p-4">
