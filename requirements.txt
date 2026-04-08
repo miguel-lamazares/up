@@ -27,3 +27,4 @@ python-jose
 passlib[bcrypt]
 jinja2
 python-multipart
+nmp install

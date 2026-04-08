@@ -30,6 +30,7 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
 
+      
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem("token", data.token);
@@ -46,30 +47,23 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-background">
+    <div className="flex min-h-screen bg-background">
       {/* Left — Illustration */}
-      <div className="hidden md:flex w-1/2 flex-col items-center justify-center gap-8 px-10">
-        <h1 className="text-3xl lg:text-4xl font-bold text-center leading-tight text-primary">
-          Acesse sua conta<br />para aproveitar nossas ferramentas
+      <div className="hidden lg:flex flex-col items-center justify-center flex-1 p-10 bg-card">
+        <h1 className="text-3xl font-extrabold text-foreground mb-6 text-center leading-snug">
+          Acesse sua conta <br /> para aproveitar nossas ferramentas
         </h1>
-        <img src={animateSvg} alt="Astronauta" className="w-72 h-72 lg:w-96 lg:h-96" />
+        <img src={animateSvg} alt="Astronauta" className="max-w-md w-full" />
       </div>
 
       {/* Right — Login card */}
-      <div className="flex w-full md:w-1/2 items-center justify-center p-6">
-        <form
-          onSubmit={handleSubmit}
-          className="card-glass w-full max-w-md flex flex-col items-center gap-6 p-8 rounded-2xl"
-        >
-          <h1 className="text-3xl font-extrabold text-primary">Login</h1>
+      <div className="flex flex-1 items-center justify-center p-6">
+        <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-6 card-glass p-8">
+          <h1 className="text-center text-foreground">Login</h1>
 
-          <div className="w-full space-y-2">
-            <Label htmlFor="username" className="text-foreground/90">
-              Usuário
-            </Label>
+          <div className="space-y-2">
+            <Label>Usuário</Label>
             <Input
-              id="username"
-              placeholder="Usuário"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="bg-card border-border/40 text-foreground placeholder:text-muted-foreground"
@@ -77,32 +71,22 @@ const Login = () => {
             />
           </div>
 
-          <div className="w-full space-y-2">
-            <Label htmlFor="password" className="text-foreground/90">
-              Senha
-            </Label>
+          <div className="space-y-2">
+            <Label>Senha</Label>
             <Input
-              id="password"
               type="password"
-              placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-card border-border/40 text-foreground placeholder:text-muted-foreground"
             />
           </div>
 
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full py-6 text-base font-extrabold uppercase tracking-widest bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_10px_40px_-12px_hsl(var(--primary)/0.35)]"
-          >
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}
           </Button>
 
           {error && (
-            <p className="text-sm font-medium text-destructive text-center">
-              {error}
-            </p>
+            <p className="text-sm text-destructive text-center">{error}</p>
           )}
         </form>
       </div>

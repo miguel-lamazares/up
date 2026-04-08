@@ -25,68 +25,64 @@ const DashboardSidebar = ({ activeSection, onSectionChange }: DashboardSidebarPr
     setMobileOpen(false);
   };
 
-  const handleLogout = async () => {
-    if (!confirm("Deseja realmente sair?")) return;
-    try {
-      const res = await fetch("/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-      });
-      if (res.ok) window.location.href = "/login";
-      else alert("Falha ao deslogar. Tente novamente.");
-    } catch {
-      alert("Erro de rede no logout.");
-    }
-  };
+const handleLogout = async () => {
+  if (!confirm("Deseja realmente sair?")) return;
+
+  try {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  } catch {
+    console.log("logout backend falhou, limpando sessão local");
+  }
+
+  localStorage.removeItem("token");
+  window.location.href = "/login";
+};
 
   const sidebarContent = (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full p-4">
       {/* Logo */}
-      <div className="flex items-center justify-between px-6 py-6 border-b border-border/30">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="Sabor do Vale" className="h-10 w-auto object-contain" />
-        </div>
+      <div className="flex items-center justify-between mb-8">
+        <img src={logo} alt="Sabor do Vale" className="h-10 object-contain" />
         <button
           onClick={() => setMobileOpen(false)}
           className="md:hidden text-muted-foreground hover:text-foreground transition"
         >
-          <X className="w-5 h-5" />
+          <X size={20} />
         </button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map((item) => {
-          const isActive = activeSection === item.id;
-          return (
-            <button
-              key={item.id}
-              onClick={() => handleNav(item.id)}
-              className={cn(
-                "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200",
-                isActive
-                  ? "bg-primary/10 text-primary border-l-[3px] border-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-              )}
-            >
-              <item.icon className="w-5 h-5 flex-shrink-0" />
-              <span>{item.label}</span>
-            </button>
-          );
-        })}
+      <nav className="flex-1 space-y-1">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => handleNav(item.id)}
+            className={cn(
+              "flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium transition-all",
+              activeSection === item.id
+                ? "bg-sidebar-accent text-sidebar-accent-foreground glow-border"
+                : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
+            )}
+          >
+            <item.icon size={18} />
+            {item.label}
+          </button>
+        ))}
       </nav>
 
       {/* Logout */}
-      <div className="px-3 pb-6">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-all duration-200"
-        >
-          <LogOut className="w-5 h-5" />
-          <span>Logout</span>
-        </button>
-      </div>
+      <button
+        onClick={handleLogout}
+        className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-all mt-4"
+      >
+        <LogOut size={18} />
+        Logout
+      </button>
     </div>
   );
 
@@ -97,24 +93,24 @@ const DashboardSidebar = ({ activeSection, onSectionChange }: DashboardSidebarPr
         onClick={() => setMobileOpen(true)}
         className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-card text-foreground"
       >
-        <Menu className="w-6 h-6" />
+        <Menu size={20} />
       </button>
 
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            onClick={() => setMobileOpen(false)}
+          />
+          <aside className="relative w-64 h-full bg-sidebar border-r border-sidebar-border animate-slide-in">
+            {sidebarContent}
+          </aside>
+        </div>
       )}
 
-      {/* Sidebar */}
-      <aside
-        className={cn(
-          "fixed md:sticky top-0 left-0 z-50 md:z-auto h-screen w-64 bg-sidebar border-r border-border/30 transition-transform duration-300",
-          mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        )}
-      >
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex md:fixed md:inset-y-0 md:left-0 w-64 bg-sidebar border-r border-sidebar-border">
         {sidebarContent}
       </aside>
     </>

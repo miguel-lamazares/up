@@ -35,72 +35,53 @@ const recentOrders = [
 ];
 
 const DashboardSection = () => (
-  <div className="animate-fade-in space-y-6">
-    <h1 className="text-foreground">Dashboard</h1>
+  <div className="space-y-8">
+    <h1>Dashboard</h1>
 
     {/* Insight Cards */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {insights.map((item) => (
-        <div
-          key={item.title}
-          className="card-glass p-6 hover:glow-border transition-all duration-300 group"
-        >
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center mb-4"
-            style={{ backgroundColor: `${item.color}20`, color: item.color }}
-          >
-            <item.icon className="w-5 h-5" />
+        <div key={item.title} className="card-glass p-6 flex items-center justify-between">
+          <div className="space-y-1">
+            <h3 className="text-muted-foreground">{item.title}</h3>
+            <p className="text-3xl font-bold text-foreground">{item.value}</p>
+            <p className="text-xs text-muted-foreground">{item.subtitle}</p>
           </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-muted-foreground">{item.title}</h3>
-              <p className="text-2xl font-bold text-foreground mt-1">{item.value}</p>
-            </div>
-            <ProgressRing percentage={item.percentage} color={item.color} />
-          </div>
-          <p className="text-xs text-muted-foreground mt-4">{item.subtitle}</p>
+          <ProgressRing percentage={item.percentage} color={item.color} />
         </div>
       ))}
     </div>
 
     {/* Recent Orders */}
     <div className="card-glass p-6">
-      <h2 className="text-foreground mb-4">Últimos pedidos</h2>
+      <h2 className="mb-4">Últimos pedidos</h2>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border/50">
-              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Cliente</th>
-              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Produto</th>
-              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Quantidade</th>
-              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Pagamento</th>
-              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Status</th>
-              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Detalhes</th>
+            <tr className="border-b border-border text-muted-foreground text-left">
+              <th className="py-3 px-4">Cliente</th>
+              <th className="py-3 px-4">Produto</th>
+              <th className="py-3 px-4">Quantidade</th>
+              <th className="py-3 px-4">Pagamento</th>
+              <th className="py-3 px-4">Status</th>
+              <th className="py-3 px-4">Detalhes</th>
             </tr>
           </thead>
           <tbody>
             {recentOrders.map((order, i) => (
-              <tr key={i} className="border-b border-border/30 last:border-none hover:bg-muted/30 transition">
-                <td className="py-3 px-4 text-foreground">{order.cliente}</td>
-                <td className="py-3 px-4 text-secondary-foreground">{order.produto}</td>
-                <td className="py-3 px-4 text-secondary-foreground">{order.quantidade}</td>
-                <td className="py-3 px-4 text-secondary-foreground">{order.pagamento}</td>
-                <td className="py-3 px-4">
-                  <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-warning/20 text-warning">
-                    {order.status}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <button className="text-primary text-xs font-medium hover:underline">Details</button>
-                </td>
+              <tr key={i} className="border-b border-border/50 hover:bg-secondary/30 transition">
+                <td className="py-3 px-4">{order.cliente}</td>
+                <td className="py-3 px-4">{order.produto}</td>
+                <td className="py-3 px-4">{order.quantidade}</td>
+                <td className="py-3 px-4">{order.pagamento}</td>
+                <td className="py-3 px-4">{order.status}</td>
+                <td className="py-3 px-4 text-primary cursor-pointer">Details</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      <button className="block w-full text-center text-primary text-sm font-medium mt-4 hover:underline">
-        Mostrar tudo
-      </button>
+      <button className="mt-4 text-sm text-primary hover:underline">Mostrar tudo</button>
     </div>
   </div>
 );
